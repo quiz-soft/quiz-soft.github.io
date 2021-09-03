@@ -1,5 +1,9 @@
 import { page, render } from './lib.js';
 
+import * as api from './api/data.js';
+window.api = api;
+
+/*
 import { getUserData } from './util.js';
 import { getQuestionsByQuizId, getQuizById, logout as apiLogout } from './api/data.js';
 import { browsePage } from './views/browse.js';
@@ -75,3 +79,4 @@ async function logout() {
     setUserNav();
     page.redirect('/');
 }
+*/
