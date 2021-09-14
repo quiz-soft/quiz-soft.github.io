@@ -3,6 +3,49 @@ import { page, render } from './lib.js';
 import * as api from './api/data.js';
 window.api = api;
 
+const main = document.getElementById('content');
+document.getElementById('logoutBtn').addEventListener('click', logoutBtn);
+
+import { getUserData } from './util.js';
+import { logout } from '../src/api/data.js';
+import { editorPage } from './views/editor/editor.js';
+import { loginPage } from './views/login.js';
+import { registerPage } from './views/register.js';
+
+
+
+page('/', decorateContext, editorPage);
+page('/login', decorateContext, loginPage);
+page('/register', decorateContext, registerPage);
+
+setUserNav();
+page.start();
+
+function decorateContext(ctx, next) {
+    ctx.setUserNav = setUserNav;
+    ctx.render = (content) => render(content, main);
+
+    next();
+}
+
+function setUserNav() {
+    const user = getUserData();
+    if (user != null) {
+        document.getElementById('user-nav').style.display = 'block';
+        document.getElementById('guest-nav').style.display = 'none';
+    } else {
+        document.getElementById('user-nav').style.display = 'none';
+        document.getElementById('guest-nav').style.display = 'block';
+    }
+}
+
+async function logoutBtn() {
+    await logout();
+
+    setUserNav();
+    page.redirect('/');
+}
+
 /*
 import { getUserData } from './util.js';
 import { getQuestionsByQuizId, getQuizById, logout as apiLogout } from './api/data.js';
